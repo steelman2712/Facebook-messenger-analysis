@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 #def html_split(filename):
 
-#Install bs4
-#Install lxml
-
-
 from bs4 import BeautifulSoup 
 import csv
 import re
