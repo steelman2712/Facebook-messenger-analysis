@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-#def html_split(filename):
+
 
 from bs4 import BeautifulSoup 
 import csv
@@ -7,11 +7,16 @@ import re
 import os
 import argparse
 
+from datetime import datetime
+import calendar
+
+
 ##Set up cli options
 cmd_dir = os.getcwd() #Get CLI location
 parser = argparse.ArgumentParser(description="Converts Facebook messenger html data to a csv format")
 parser.add_argument("-i",'--infile', nargs='?',dest="infile", type=str,default=os.path.join(cmd_dir,"message.html"),help="Input html file to be converted, the default is in the current location of the cli and called 'message.html'") #Add input argument
 parser.add_argument("-o",'--outfile', nargs='?',dest="outfile", type=str,default=os.path.join(cmd_dir,"htmlcsv.csv"), help="Output csv file to write to, the default is in the current location of the cli and called 'htmlcsv.csv'")	#Out output file argument
+parser.add_argument("-d",'--date',nargs=1,dest="date_yes",type=int,default=1,help="Decide whether to split the date and time columns. yes = 1, no = 0 with a default of 1. Subsequent analysis scripts provided assume date and time are split.") #Add date splitting option
 args = parser.parse_args()
 
 
@@ -114,8 +119,8 @@ while i < len(l)-2:
     else:
         l.insert(i+3, "react_none")
     i=i+4
-    
-    
+
+
     
 #Writing to csv file
 if not args.outfile.endswith("csv"):
@@ -129,5 +134,33 @@ with open(csv_out, 'w') as csvfile:
         htmlwriter.writerow([l[i],l[i+1],l[i+2],l[i+3]])
         
         
+        
+#Split date
+if args.date_yes==1:
+    #Define date splitting function
+    def date_split(date_input):
+        date_input= datetime.strptime(str(date_input), '%d %B %Y %H:%M')
+        date0 = str(date_input).split()
+        return(date0)
+
+
+    with open(csv_out,"r") as csvfile:
+        htmlreader = csv.reader(csvfile, delimiter=',')
+        next(htmlreader)
+        new_rows_list = [['Name','Message','Date','Time','React']]
+        for row in htmlreader:
+            date = date_split(row[2])
+            row.append(row[3])
+            row[2] = date[0]
+            row[3] = date[1]
+            #print(row)
+            new_rows_list.append(row)
+        csvfile.close()
+
+
+    with open(csv_out,"w") as csv_out:
+        writer = csv.writer(csv_out, delimiter=",")
+        writer.writerows(new_rows_list)
+        csv_out.close()
         
         
