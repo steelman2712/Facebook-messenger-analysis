@@ -1,14 +1,8 @@
-#install.packages("dplyr")
-#install.packages("lubridate")
-#install.packages("hms")
-
-#library(data.table)
-#library(ggplot2)
 library(dplyr)
 library(lubridate)
 library(hms)
 
-#Read data from html_to_csv.py output csv
+#Read data from html_to_csv.py output csv. Change this for your file.
 data = read.csv("E:\\Documents\\R\\Facebook - Copy\\analysis\\htmlcsv.csv")
 
 #Split date and time into two different columns
@@ -34,7 +28,6 @@ name_date <- function(x) {
   plot(date2, type="l")
   cumdate2 <- cumsum(date2)
   plot(cumdate2,xaxt='n',type="l")
-  #axis(1,at=1:length(cumdate2), labels=names(cumdate2),srt=45)
 }
 
 #Creates sequence of dates between start and end of time period selected
@@ -80,7 +73,6 @@ dfmessages <- function(x){
   #Create new columns for each name
   for(i in 1:length(x)){
     name <- name_date(x[i])
-    #print(name)
     name_out <- message_count(name)
     message_df <- cbind(message_df,name_out) 
     colnames(message_df)[i+1] <- x[i]
@@ -104,19 +96,6 @@ legend_names <- gsub("at_","",colnames(df_message[2:ncol(df_message)]))
 legend("topleft", legend_names,col=seq_len(nn)-1,cex=0.8,fill=seq_len(nn))
 
 
-
-#Number of messages sent by person given by at_names[1]
-length(which(data$Name==at_names[1]))
-#Amount of media fies sent
-length(which(data$Message=="media"))
-
-
-
-
-
-
-
-"7 September 2018 16:50"
 
 
 
