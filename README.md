@@ -50,7 +50,7 @@ Creates a graph displaying the amount of messages sent by a person against the d
 
 This script takes two commands, one required and one optional:
 
-- -n, --name: The name of the person you want a graph for. 
+- -n, --name: The name of the person you want a graph for. If you've not renamed them it will be in the form "at_Firstname Surname"
 
 - -i, --input: used to specify the location of the htmlcsv.csv file. Defaults to one called "message.html" in the location where the terminal is. (Optional)
 
