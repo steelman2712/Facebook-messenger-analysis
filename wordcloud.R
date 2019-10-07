@@ -6,6 +6,7 @@ library("tm")
 library("SnowballC")
 library("RColorBrewer")
 library("wordcloud")
+library("textclean")
 
 #Set folder we want to pull data from and to. 
 #Should be wherever the python script outputted the csv file.
